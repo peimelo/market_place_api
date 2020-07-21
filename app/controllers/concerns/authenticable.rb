@@ -17,4 +17,10 @@ module Authenticable
     header = request.headers["Authorization"]
     header.gsub(pattern, "") if header && header.match(pattern)
   end
+
+  protected
+
+  def check_login
+    head :forbidden unless self.current_user
+  end
 end
