@@ -15,6 +15,7 @@ class Api::V1::ProductsController < ApplicationController
 
   def create
     product = current_user.products.build(product_params)
+
     if product.save
       render json: ProductSerializer.new(product).serializable_hash, status: :created
     else
