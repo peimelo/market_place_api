@@ -40,7 +40,7 @@ class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
   test "should update user" do
     patch api_v1_user_url(@user),
           params: { user: { email: @user.email } },
-          headers: { Authorization: "Bearer #{JsonWebToken.encode(user_id: @user.id)}" },
+          headers: get_authorization_header(@user.id),
           as: :json
     assert_response :success
   end
@@ -53,7 +53,7 @@ class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
   test "should destroy user" do
     assert_difference("User.count", -1) do
       delete api_v1_user_url(@user),
-             headers: { Authorization: "Bearer #{JsonWebToken.encode(user_id: @user.id)}" },
+             headers: get_authorization_header(@user.id),
              as: :json
     end
     assert_response :no_content

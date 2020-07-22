@@ -16,4 +16,8 @@ class ActiveSupport::TestCase
     assert_not_nil json_response.dig(:links, :next)
     assert_not_nil json_response.dig(:links, :prev)
   end
+
+  def get_authorization_header(user_id)
+    { Authorization: "Bearer #{JsonWebToken.encode(user_id: user_id)}" }
+  end
 end

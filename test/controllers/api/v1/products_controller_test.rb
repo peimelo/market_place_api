@@ -28,9 +28,7 @@ class Api::V1::ProductsControllerTest < ActionDispatch::IntegrationTest
       post api_v1_products_url,
            params: { product: {
              title: @product.title, price: @product.price, published: @product.published,
-           } }, headers: {
-             Authorization: "Bearer #{JsonWebToken.encode(user_id: @product.user_id)}",
-           }, as: :json
+           } }, headers: get_authorization_header(@product.user_id), as: :json
     end
     assert_response :created
   end
@@ -48,7 +46,7 @@ class Api::V1::ProductsControllerTest < ActionDispatch::IntegrationTest
   test "should update product" do
     patch api_v1_product_url(@product),
           params: { product: { title: @product.title } },
-          headers: { Authorization: "Bearer #{JsonWebToken.encode(user_id: @product.user_id)}" },
+          headers: get_authorization_header(@product.user_id),
           as: :json
     assert_response :success
   end
@@ -56,7 +54,7 @@ class Api::V1::ProductsControllerTest < ActionDispatch::IntegrationTest
   test "should forbid update product" do
     patch api_v1_product_url(@product),
           params: { product: { title: @product.title } },
-          headers: { Authorization: "Bearer #{JsonWebToken.encode(user_id: users(:two).id)}" },
+          headers: get_authorization_header(users(:two).id),
           as: :json
     assert_response :forbidden
   end
@@ -64,9 +62,7 @@ class Api::V1::ProductsControllerTest < ActionDispatch::IntegrationTest
   test "should destroy product" do
     assert_difference("Product.count", -1) do
       delete api_v1_product_url(@product),
-             headers: {
-               Authorization: "Bearer #{JsonWebToken.encode(user_id: @product.user_id)}",
-             },
+             headers: get_authorization_header(@product.user_id),
              as: :json
     end
     assert_response :no_content
@@ -75,9 +71,7 @@ class Api::V1::ProductsControllerTest < ActionDispatch::IntegrationTest
   test "should forbid destroy product" do
     assert_no_difference("Product.count") do
       delete api_v1_user_url(@product),
-             headers: {
-               Authorization: "Bearer #{JsonWebToken.encode(user_id: users(:two).id)}",
-             },
+             headers: get_authorization_header(users(:two).id),
              as: :json
     end
     assert_response :forbidden

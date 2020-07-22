@@ -21,7 +21,7 @@ class Api::V1::OrdersControllerTest < ActionDispatch::IntegrationTest
 
   test "should show orders" do
     get api_v1_orders_url,
-        headers: { Authorization: "Bearer #{JsonWebToken.encode(user_id: @order.user_id)}" },
+        headers: get_authorization_header(@order.user_id),
         as: :json
     assert_response :success
 
@@ -32,7 +32,7 @@ class Api::V1::OrdersControllerTest < ActionDispatch::IntegrationTest
 
   test "should show order" do
     get api_v1_order_url(@order),
-        headers: { Authorization: "Bearer #{JsonWebToken.encode(user_id: @order.user_id)}" },
+        headers: get_authorization_header(@order.user_id),
         as: :json
     assert_response :success
 
@@ -53,7 +53,7 @@ class Api::V1::OrdersControllerTest < ActionDispatch::IntegrationTest
       assert_difference("Placement.count", 2) do
         post api_v1_orders_url,
           params: @order_params,
-          headers: { Authorization: "Bearer #{JsonWebToken.encode(user_id: @order.user_id)}" },
+          headers: get_authorization_header(@order.user_id),
           as: :json
       end
     end
