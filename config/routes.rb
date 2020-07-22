@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
       resources :products
 
-      resources :orders, only: [:index]
+      resources :orders, only: %i[index show]
     end
   end
 end
