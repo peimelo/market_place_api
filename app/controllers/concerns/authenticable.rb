@@ -28,7 +28,8 @@ module Authenticable
   protected
 
   def check_login
-    # head :forbidden unless current_user.class == User
+    head :forbidden unless current_user.instance_of?(User)
+
     current_user
   rescue ActiveRecord::RecordNotFound
     render json: {
@@ -41,6 +42,10 @@ module Authenticable
   rescue JWT::VerificationError
     render json: {
       error: { message: 'VerificationError' }
+    }, status: :forbidden
+  rescue StandardError
+    render json: {
+      error: { message: 'nnnn' }
     }, status: :forbidden
   end
 end

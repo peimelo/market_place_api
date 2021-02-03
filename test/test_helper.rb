@@ -1,6 +1,6 @@
-ENV["RAILS_ENV"] ||= "test"
-require_relative "../config/environment"
-require "rails/test_help"
+ENV['RAILS_ENV'] ||= 'test'
+require_relative '../config/environment'
+require 'rails/test_help'
 
 class ActiveSupport::TestCase
   # Run tests in parallel with specified workers
@@ -18,6 +18,7 @@ class ActiveSupport::TestCase
   end
 
   def get_authorization_header(user_id)
+    p "USER_ID = #{user_id}"
     { Authorization: "Bearer #{JsonWebToken.encode(user_id: user_id)}" }
   end
 end
